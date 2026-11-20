@@ -101,6 +101,15 @@ public class Plane : MonoBehaviour
             {
                 missile.GetComponent<HomingMissile>().targetPosition = targetingSystem.currentTarget.transform;
             }
+
+            if (missileSpawner.name == "MissileSpawnerRight")
+            {
+                missileSpawner = GameObject.Find("MissileSpawnerLeft");
+            }
+            else if (missileSpawner.name == "MissileSpawnerLeft")
+            {
+                missileSpawner = GameObject.Find("MissileSpawnerRight");
+            }
         }
 
         // strzelanie
@@ -147,10 +156,10 @@ public class Plane : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, shootingRange))
         {
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null) 
+            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            if (enemy != null) 
             {
-                target.TakeDamage(damage);
+                enemy.TakeDamage(damage);
             }
         }
     }

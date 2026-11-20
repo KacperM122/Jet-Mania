@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HomingMissile : MonoBehaviour
@@ -19,7 +20,17 @@ public class HomingMissile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         plane = GameObject.FindGameObjectWithTag("Player");
-        speed = plane.GetComponent<Rigidbody>().linearVelocity.magnitude + additionalSpeed;
+        speed = plane.GetComponent<Rigidbody>().linearVelocity.magnitude;
+
+        StartCoroutine(AddSpeed());
+    }
+
+    //opóŸniony start rakiety
+    IEnumerator AddSpeed()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        speed += additionalSpeed;
     }
 
     void FixedUpdate()
@@ -45,10 +56,10 @@ public class HomingMissile : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
         {
-            Target target = other.transform.GetComponent<Target>();
-            if (target != null)
+            Enemy enemy = other.transform.GetComponent<Enemy>();
+            if (enemy != null)
             {
-                target.TakeDamage(damage);
+                enemy.TakeDamage(damage);
             }
 
             Instantiate(explosionEffect, gameObject.transform.position, Quaternion.identity);
